@@ -1,0 +1,101 @@
+openapi: 3.0.4
+info:
+  title: Indey.API
+  description: REST API для проекта Indey — набора базовых инструментов для начинающих предпринимателей, с ограниченным бюджетом для разработки и внедрения цифровых продуктов.
+  termsOfService: https://indey.dev/terms
+  contact:
+    email: dev@indey.dev
+  license:
+    name: MIT
+    url: https://opensource.org/license/mit
+  version: 1.0.0
+servers:
+  - url: https://indey.dev/api/v1
+tags:
+  - name: home
+    description: Базовая документация Indey.API
+  - name: user
+    description: Управление пользователями
+  - name: role
+    description: Управление группами пользователей
+  - name: product
+    description: Управление продуктами
+  - name: order
+    description: Управление заказами
+paths:
+  /api/v1/:
+    options:
+      tags:
+        - home
+      description: Получение списка разрешённых заголовков, списка разрешённых методов для доступа к документации Indey.API
+      responses:
+        '200':
+          description: Запрос успешно обработан сервером
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+              description: Разрешенные политикой CORS доменные имена
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+              description: Разрешенные политикой CORS методы (OPTIONS, GET)
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+              description: Разрешенные политикой CORS заголовки (Accept, Accept-Encoding, Authorization, Content-Length, Content-Type)
+            Access-Control-Allow-Credentials:
+              schema:
+                type: string
+              description: Разрешена ли политикой CORS пересылка данных защищённых ключами доступа (true)
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/Response"
+              example:
+                response:
+                  Successful operation
+        '500':
+          description: Сервер не может обработать этот запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/Response"
+              example:
+                response:
+                  Internal server error
+    get:
+      tags:
+        - home
+      description: Вывод документации для работы с RESTfull API
+      responses:
+        '200':
+          description: Запрос успешно обработан сервером
+          content:
+            text/html:
+              schema:
+                type: string
+              examples:
+                resourceExample:
+                  summary: Текущая документация
+                  value:
+                    downloadUrl: https://indey.dev/api
+        '500':
+          description: Сервер не может обработать этот запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/Response"
+              example:
+                response:
+                  Internal server error
+components:
+  schemas:
+    Response:
+      type: object
+      properties:
+        response:
+          type: string

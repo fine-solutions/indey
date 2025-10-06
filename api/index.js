@@ -1,11 +1,7 @@
-const express = require('express')
-const app = express()
-const port = 3000
+require('dotenv').config()
+const { initServer } = require('./server/server.js')
 
-app.get('/', (request, response) => {
-  response.send('Hello world!')
-})
+const port = process.env.PORT || 5000
+const basePath = `${process.env.BASE_PATH}/v${process.env.API_VERSION}`
 
-app.listen(port, () => {
-  console.log(`Webserver is started and listen to port '${port}'`)
-})
+initServer(port, basePath)

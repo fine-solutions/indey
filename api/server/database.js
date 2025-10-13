@@ -1,16 +1,22 @@
-const randomstring = require('randomstring')
+const { Client } = require('pg')
 
-function initDatabase(userCount=256) {
-  const userList = []
-  for (let i = 0; i < userCount; i++) {
-    userList.push({
-      id: i + 1,
-      email: `${randomstring.generate(6)}@${randomstring.generate(6)}.${randomstring.generate(3)}`
-    })
+async function initDatabase(username, password, database, host='localhost', port=5432) {
+  const client = new Client({
+    user: username,
+    password: password,
+    database: database,
+    host: host,
+    port: port,
+  })
+
+  try {
+    await client.connect()
+  } catch (err) {
+    console.error(err)
+    return undefined
   }
-  return {
-    users: userList
-  }
+
+  return client
 }
 
 module.exports = {

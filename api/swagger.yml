@@ -1,7 +1,7 @@
 openapi: 3.0.4
 info:
   title: Indey.API
-  description: REST API для проекта Indey — набора базовых инструментов для начинающих предпринимателей, с ограниченным бюджетом для разработки и внедрения цифровых продуктов.
+  description: Остальные для API-интерфейса проекта индей — набора базовых инструментов для начинающих предпринимателей, с ограниченным бюджетом для разработки и внедрения цифровых продуктов.
   termsOfService: https://indey.dev/terms
   contact:
     email: dev@indey.dev
@@ -13,7 +13,7 @@ servers:
   - url: https://indey.dev/api/v1
 tags:
   - name: home
-    description: Базовая документация Indey.API
+    description: База данных Индии.интерфейс прикладного программирования
   - name: user
     description: Управление пользователями
   - name: role
@@ -27,7 +27,7 @@ paths:
     options:
       tags:
         - home
-      description: Получение списка разрешённых заголовков, списка разрешённых методов для доступа к документации Indey.API
+      description: Получен отчет о разносторонних исследованиях, отчет о разносторонних методах для получения информации в Индии.интерфейс прикладного программирования
       responses:
         '200':
           description: Запрос успешно обработан сервером
@@ -35,19 +35,19 @@ paths:
             Access-Control-Allow-Origin:
               schema:
                 type: string
-              description: Разрешенные политикой CORS доменные имена
+              description: Измененные политические взгляды других людей
             Access-Control-Allow-Methods:
               schema:
                 type: string
-              description: Разрешенные политикой CORS методы (OPTIONS, GET)
+              description: Измененные полисные коды методов (ОПЦИИ, ПОЛУЧИТЬ)
             Access-Control-Allow-Headers:
               schema:
                 type: string
-              description: Разрешенные политикой CORS заголовки (Accept, Accept-Encoding, Authorization, Content-Length, Content-Type)
+              description: Расширенные поля для загрузки (Accept, Accept-Кодировка, Авторизация, Content-Длина, Content-тип)
             Access-Control-Allow-Credentials:
               schema:
                 type: string
-              description: Разрешена ли политикой CORS пересылка данных защищённых ключами доступа (true)
+              description: Разрешена ли политикой CORS, так пересылка данных защищённых ключами доступа (правда)
           content:
             application/json:
               schema:
@@ -69,7 +69,7 @@ paths:
     get:
       tags:
         - home
-      description: Вывод документации для работы с RESTfull API
+      description: Вывод информации для работы с RESTfull API
       responses:
         '200':
           description: Запрос успешно обработан сервером
@@ -92,10 +92,1523 @@ paths:
               example:
                 response:
                   Internal server error
+  /api/v1/form:
+    options:
+      tags:
+        - form
+      summary: Получить все допустимые методы для HTTP-запросов (для всех сущностей).
+      description: Этот маршрут используется для получения всех разрешенных HTTP-методов.
+      operationId: OptionsForm
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                type: string
+                items:
+                  $ref: '#/components/schemas/Form'
+                example:
+                  text:
+                    Permitted options has been gotten
+    get:
+      tags:
+        - form
+      summary: Получить информацию о заполненных формах.
+      description: Этот маршрут используется для получения списка форм с подробной информацией, если разрешен действительный запрос текущего пользователя.
+      operationId: GetForms
+      security:
+        - sd_rest_auth: []
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Form'
+        '401':
+          description: Неавторизованному пользователю или пользователю без разрешения "выбрать:все:форму" или "выбрать:собственную:форму" выполнение операции запрещено
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unauthorized
+        '500':
+          description: Не удалось найти пользователя с запрошенным "uid"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: internal server error
+    post:
+      tags:
+        - form
+      summary: Создать новую форму
+      description: Этот маршрут используется для создания форм по очереди, если разрешен действительный запрос текущего пользователя.
+      operationId: CreateForm
+      security:
+        - sd_rest_auth: []
+      responses:
+        '201':
+          description: успешное создание
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Form'
+        '401':
+          description: Операция запрещена для неавторизованного пользователя или пользователя без разрешения "вставить:собственную:форму" или "вставить:все:формы".
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unauthorized
+        '422':
+          description: Отправлен недопустимый объект формы, что приводит к ошибке "Объект не поддается обработке"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unprocessable entity
+        '500':
+          description: Не удается сохранить объект формы в базе данных
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: internal server error
+  /api/v1/form/{id}:
+    options:
+      tags:
+        - form/{id}
+      summary: Получить все допустимые методы для HTTP-запросов (для всех сущностей).
+      description: Этот маршрут используется для получения всех разрешенных HTTP-методов.
+      operationId: OptionsForm
+      responses:
+        '200':
+          description: Операция прошла успешно
+          content:
+            application/json:
+              schema:
+                type: string
+                items:
+                  $ref: '#/components/schemas/HForm
+                example:
+                  text:
+                    Permitted options has been gotten
+    get:
+      tags:
+        - form/{id}
+      summary: Получить информацию о форме с идентификатором.
+      description: Этот маршрут используется для получения информации о форме, если разрешен допустимый запрос текущего пользователя.
+      operationId: GetForm
+      parameters:
+        - name: id
+          in: path
+          description: Идентификатор формы в базе данных
+          required: true
+          style: simple
+          schema:
+            type: number
+      security:
+        - sd_rest_auth: []
+      responses:
+        '200':
+          description: Успешная работа
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Form'
+        '400':
+          description: Параметр "id" недопустим для запроса
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: bad request
+        '401':
+          description: Операция запрещена для неавторизованного пользователя или пользователя без разрешения "выбрать:все:формы" или "выбрать:собственную:форму"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unauthorized
+        '404':
+          description: Не удалось найти форму с запрошенным "id"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: status not found
+    post:
+      tags:
+        - form/{id}
+      summary: Создать новую форму с идентификатором.
+      description: Этот маршрут используется для получения формы с идентификатором, если разрешен действительный запрос текущего пользователя.
+      operationId: CreateFormWithID
+      parameters:
+        - name: id
+          in: path
+          description: Идентификатор формы в базе данных
+          required: true
+          style: simple
+          schema:
+            type: number
+      security:
+        - sd_rest_auth: []
+      responses:
+        '200':
+          description: Операция выполнена успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Form'
+        '400':
+          description: Параметр "id" недопустим для запроса
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: bad request
+        '401':
+          description: Операция не разрешена для неавторизованного пользователя или пользователя без разрешения "вставить:все:форму" или "вставить:собственную:форму"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unauthorized
+        '422':
+          description: Отправлен неверный объект формы, который ведет к ошибке "Объект, который невозможно обработать".
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unprocessable entity
+        '500':
+          description: Не удалось сохранить форму с запрошенным "id"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: internal server error
+    put:
+      tags:
+        - form/{id}
+      summary: Обновите информацию о форме с идентификатором.
+      description: Этот маршрут используется для задания объекта формы с идентификатором, если разрешен действительный запрос текущего пользователя.
+      operationId: UpdateForm
+      parameters:
+        - name: id
+          in: path
+          description: Идентификатор формы в базе данных
+          required: true
+          style: simple
+          schema:
+            type: number
+      security:
+        - sd_rest_auth: []
+      responses:
+        '200':
+          description: Операция выполнена успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Form'
+        '400':
+          description: Параметр "id" недопустим для запроса
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: bad request
+        '401':
+          description: Операция не разрешена для неавторизованного пользователя или пользователя без разрешения "обновить:все:формы" или "обновить:собственную:форму"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unauthorized
+        '422':
+          description: Был отправлен неверный объект формы, который ведет к ошибке "Необработанная сущность"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unprocessable entity
+        '500':
+          description: Не удалось сохранить форму с запрошенным идентификатором
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: internal server error
+    delete:
+      tags:
+        - form/{id}
+      summary: Удалите пользователя с идентификатором.
+      description: Этот маршрут используется для удаления формы с идентификатором, если разрешен действительный запрос текущего пользователя.
+      operationId: DeleteForm
+      parameters:
+        - name: id
+          in: path
+          description: Идентификатор формы в базе данных
+          required: true
+          style: simple
+          schema:
+            type: number
+      security:
+        - sd_rest_auth: []
+      responses:
+        '200':
+          description: Успешная работа
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Home'
+              example:
+                text: Form has been successfully deleted
+              
+        '400':
+          description: Параметр "id" недопустим для запроса
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: bad request
+        '401':
+          description: Операция запрещена для неавторизованного пользователя или пользователя без разрешения "удалить:все:формы" или "удалить:собственную:форму"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unauthorized
+        '500':
+          description: Не удалось удалить форму из базы данных
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: internal server error
+  /api/v1/form/page/{page}:
+    options:
+      tags:
+        - form/page/{page}
+      summary: Получите все приемлемые методы для HTTP-запросов (для всех сущностей).
+      description: Этот маршрут используется для получения всех разрешенных HTTP-методов.
+      operationId: OptionsForm
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                type: string
+                items:
+                  $ref: '#/components/schemas/Form'
+                example:
+                  text:
+                    Permitted options has been gotten
+    get:
+      tags:
+        - form/page/{page}
+      summary: Получите информацию о формах (вплоть до "FORM_LIST_PAGE_LIMIT" на странице).
+      description: Этот маршрут используется для получения форм, если разрешен действительный запрос текущего пользователя.
+      operationId: GetFormList
+      parameters:
+        - name: page
+          in: path
+          description: Номер страницы списка форм
+          required: true
+          style: simple
+          schema:
+            type: number
+      security:
+        - sd_rest_auth: []
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Form'
+        '400':
+          description: Параметр "страница" недопустим для запроса
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: bad request
+        '401':
+          description: Операция запрещена для неавторизованного пользователя или пользовательницы без разрешения "выбрать:все:форма"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unauthorized
+        '500':
+          description: Переменная "FORM_LIST_PAGE_LIMIT" не может быть получена из файла .env или данные формы не могут быть получены из базы данных
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: internal server error
+  /api/v1/order:
+    options:
+      tags:
+        - order
+      summary: Получить все допустимые методы для HTTP-запросов (для всех сущностей).
+      description: Этот маршрут используется для получения всех разрешенных HTTP-методов.
+      operationId: OptionsOrder
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                type: string
+                items:
+                  $ref: '#/components/schemas/Order'
+                example:
+                  text:
+                    Permitted options has been gotten
+    get:
+      tags:
+        - order
+      summary: Получить информацию о заполненных заказах.
+      description: Этот маршрут используется для получения списка форм с подробной информацией, если разрешен действительный запрос текущего пользователя.
+      operationId: GetOrders
+      security:
+        - sd_rest_auth: []
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        '401':
+          description: Неавторизованному пользователю или пользователю без разрешения "выбрать:все:заказ" или "выбрать:собственную:заказ" выполнение операции запрещено
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unauthorized
+        '500':
+          description: Не удалось найти пользователя с запрошенным "uid"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: internal server error
+    post:
+      tags:
+        - order
+      summary: Создать новую заказ
+      description: Этот маршрут используется для создания форм по очереди, если разрешен действительный запрос текущего пользователя.
+      operationId: CreateOrder
+      security:
+        - sd_rest_auth: []
+      responses:
+        '201':
+          description: успешное создание
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Order'
+        '401':
+          description: Операция запрещена для неавторизованного пользователя или пользователя без разрешения "вставить:собственную:заказ" или "вставить:все:заказ".
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unauthorized
+        '422':
+          description: Отправлен недопустимый объект заказа, что приводит к ошибке "Объект не поддается обработке"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unprocessable entity
+        '500':
+          description: Не удается сохранить объект заказа в базе данных
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: internal server error
+  /api/v1/order/{id}:
+    options:
+      tags:
+        - order/{id}
+      summary: Получить все допустимые методы для HTTP-запросов (для всех сущностей).
+      description: Этот маршрут используется для получения всех разрешенных HTTP-методов.
+      operationId: OptionsOrder
+      responses:
+        '200':
+          description: Операция прошла успешно
+          content:
+            application/json:
+              schema:
+                type: string
+                items:
+                  $ref: '#/components/schemas/HOrder
+                example:
+                  text:
+                    Permitted options has been gotten
+    get:
+      tags:
+        - order/{id}
+      summary: Получить инзаказцию о заказе с идентификатором.
+      description: Этот маршрут используется для получения инзаказции о заказе, если разрешен допустимый запрос текущего пользователя.
+      operationId: GetOrder
+      parameters:
+        - name: id
+          in: path
+          description: Идентификатор заказа в базе данных
+          required: true
+          style: simple
+          schema:
+            type: number
+      security:
+        - sd_rest_auth: []
+      responses:
+        '200':
+          description: Успешная работа
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: Параметр "id" недопустим для запроса
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: bad request
+        '401':
+          description: Операция запрещена для неавторизованного пользователя или пользователя без разрешения "выбрать:все:заказ" или "выбрать:собственную:заказ"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unauthorized
+        '404':
+          description: Не удалось найти заказ с запрошенным "id"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: status not found
+    post:
+      tags:
+        - order/{id}
+      summary: Создать новую заказ с идентификатором.
+      description: Этот маршрут используется для получения заказа с идентификатором, если разрешен действительный запрос текущего пользователя.
+      operationId: CreateOrderWithID
+      parameters:
+        - name: id
+          in: path
+          description: Идентификатор заказа в базе данных
+          required: true
+          style: simple
+          schema:
+            type: number
+      security:
+        - sd_rest_auth: []
+      responses:
+        '200':
+          description: Операция выполнена успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Order'
+        '400':
+          description: Параметр "id" недопустим для запроса
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: bad request
+        '401':
+          description: Операция не разрешена для неавторизованного пользователя или пользователя без разрешения "вставить:все:заказ" или "вставить:собственную:заказ"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unauthorized
+        '422':
+          description: Отправлен неверный объект заказа, который ведет к ошибке "Объект, который невозможно обработать".
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unprocessable entity
+        '500':
+          description: Не удалось сохранить заказ с запрошенным "id"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: internal server error
+    put:
+      tags:
+        - order/{id}
+      summary: Обновите инзаказцию о заказе с идентификатором.
+      description: Этот маршрут используется для задания объекта заказа с идентификатором, если разрешен действительный запрос текущего пользователя.
+      operationId: UpdateOrder
+      parameters:
+        - name: id
+          in: path
+          description: Идентификатор заказа в базе данных
+          required: true
+          style: simple
+          schema:
+            type: number
+      security:
+        - sd_rest_auth: []
+      responses:
+        '200':
+          description: Операция выполнена успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Order'
+        '400':
+          description: Параметр "id" недопустим для запроса
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: bad request
+        '401':
+          description: Операция не разрешена для неавторизованного пользователя или пользователя без разрешения "обновить:все:заказа" или "обновить:собственную:заказ"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unauthorized
+        '422':
+          description: Был отправлен неверный объект заказа, который ведет к ошибке "Необработанная сущность"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unprocessable entity
+        '500':
+          description: Не удалось сохранить заказ с запрошенным идентификатором
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: internal server error
+    delete:
+      tags:
+        - order/{id}
+      summary: Удалите пользователя с идентификатором.
+      description: Этот маршрут используется для удаления заказа с идентификатором, если разрешен действительный запрос текущего пользователя.
+      operationId: DeleteOrder
+      parameters:
+        - name: id
+          in: path
+          description: Идентификатор заказа в базе данных
+          required: true
+          style: simple
+          schema:
+            type: number
+      security:
+        - sd_rest_auth: []
+      responses:
+        '200':
+          description: Успешная работа
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Home'
+              example:
+                text: Order has been successfully deleted
+              
+        '400':
+          description: Параметр "id" недопустим для запроса
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: bad request
+        '401':
+          description: Операция запрещена для неавторизованного пользователя или пользователя без разрешения "удалить:все:заказа" или "удалить:собственную:заказ"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unauthorized
+        '500':
+          description: Не удалось удалить заказ из базы данных
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: internal server error
+  /api/v1/order/page/{page}:
+    options:
+      tags:
+        - order/page/{page}
+      summary: Получите все приемлемые методы для HTTP-запросов (для всех сущностей).
+      description: Этот маршрут используется для получения всех разрешенных HTTP-методов.
+      operationId: OptionsOrder
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                type: string
+                items:
+                  $ref: '#/components/schemas/Order'
+                example:
+                  text:
+                    Permitted options has been gotten
+    get:
+      tags:
+        - order/page/{page}
+      summary: Получите инзаказцию о заказах (вплоть до "ORDER_LIST_PAGE_LIMIT" на странице).
+      description: Этот маршрут используется для получения форм, если разрешен действительный запрос текущего пользователя.
+      operationId: GetOrderList
+      parameters:
+        - name: page
+          in: path
+          description: Номер страницы списка форм
+          required: true
+          style: simple
+          schema:
+            type: number
+      security:
+        - sd_rest_auth: []
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        '400':
+          description: Параметр "страница" недопустим для запроса
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: bad request
+        '401':
+          description: Операция запрещена для неавторизованного пользователя или пользовательницы без разрешения "выбрать:все:заказ"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unauthorized
+        '500':
+          description: Переменная "ORDER_LIST_PAGE_LIMIT" не может быть получена из файла .env или данные заказа не могут быть получены из базы данных
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: internal server error
+  /api/v1/user:
+    options:
+      tags:
+        - user
+      summary: Получите все допустимые методы для HTTP-запросов (для всех сущностей).
+      description: Этот маршрут используется для доступа ко всем разрешенным HTTP-методам.
+      operationId: OptionsUser
+      responses:
+        '200':
+          description: Успешной работы
+          content:
+            application/json:
+              schema:
+                type: string
+                items:
+                  $ref: '#/components/schemas/User'
+                example:
+                  text:
+                    Permitted options has been gotten
+    get:
+      tags:
+        - user
+      summary: Получите информацию о пользователях (вплоть до "USER_LIST_PAGE_LIMIT" от первого зарегистрированного).
+      description: Этот маршрут используется для получения доступа к пользователям, если разрешен действительный запрос текущего пользователя.
+      operationId: GetUsers
+      security:
+        - sd_rest_auth: []
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '401':
+          description: Операция запрещена для неавторизованного пользователя или пользовательницы без разрешения "выбрать:все:пользователь"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unauthorized
+        '500':
+          description: Переменная "FORM_LIST_PAGE_LIMIT" не может быть получена из файла .env или данные пользователей не могут быть получены из базы данных
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: internal server error
+    post:
+      tags:
+        - user
+      summary: Создайте нового пользователя
+      description: Этот маршрут используется для создания пользователей по одному, если разрешен действительный запрос текущего пользователя.
+      operationId: CreateUser
+      security:
+        - sd_rest_auth: []
+      responses:
+        '201':
+          description: успешное создание
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Операция запрещена для неавторизованного пользователя или пользователя без разрешения "вставить:все:пользователь".
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unauthorized
+        '422':
+          description: Был отправлен недопустимый пользовательский объект, который является ссылкой на ошибку unprocessable entity
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unprocessable entity
+        '500':
+          description: Не удается сохранить пользовательский объект в базе данных
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: internal server error
+  /api/v1/user/{uid}:
+    options:
+      tags:
+        - user/{uid}
+      summary: Получите все допустимые методы для HTTP-запросов (для всех сущностей).
+      description: Этот маршрут используется для получения всех разрешенных HTTP-методов.
+      operationId: OptionsUser
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                type: string
+                items:
+                  $ref: '#/components/schemas/User'
+                example:
+                  text:
+                    Permitted options has been gotten
+    get:
+      tags:
+        - user/{uid}
+      summary: Получите информацию о пользователе с идентификатором.
+      description: Этот маршрут используется для получения информации о пользователе, если разрешен действительный запрос текущего пользователя.
+      operationId: GetUser
+      parameters:
+        - name: uid
+          in: path
+          description: Идентификатор пользователя в базе данных
+          required: true
+          style: simple
+          schema:
+            type: number
+      security:
+        - sd_rest_auth: []
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Параметр "uid" недопустим для запроса
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: bad request
+        '401':
+          description: Операция запрещена для неавторизованного пользователя или пользователя без разрешения "select:all:user" или "select:own:user"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unauthorized
+        '404':
+          description: Не удалось найти пользователя с запрошенным "uid"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: status not found
+    post:
+      tags:
+        - user/{uid}
+      summary: Создайте нового пользователя с идентификатором.
+      description: Этот маршрут используется для получения доступа к пользователям, если разрешен действительный запрос текущего пользователя.
+      operationId: CreateUserWithID
+      parameters:
+        - name: uid
+          in: path
+          description: Идентификатор пользователя в базе данных
+          required: true
+          style: simple
+          schema:
+            type: number
+      security:
+        - sd_rest_auth: []
+      responses:
+        '200':
+          description: Операция выполнена успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/User'
+        '400':
+          description: Параметр "uid" недопустим для запроса
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: bad request
+        '401':
+          description: Операция запрещена для неавторизованного пользователя или пользователя без разрешения "select:all:user" или "select:own:user"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unauthorized
+        '422':
+          description: Был отправлен недопустимый пользовательский объект, который является ошибкой "доступ к необрабатываемому объекту"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unprocessable entity
+        '500':
+          description: Не удалось сохранить пользователя с запрошенным "uid"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: internal server error
+    put:
+      tags:
+        - user/{uid}
+      summary: Обновите информацию о пользователе с идентификатором.
+      description: Этот маршрут используется для обновления идентификатора объекта user, если разрешен действительный запрос текущего пользователя.
+      operationId: UpdateUser
+      parameters:
+        - name: uid
+          in: path
+          description: Идентификатор пользователя в базе данных
+          required: true
+          style: simple
+          schema:
+            type: number
+      security:
+        - sd_rest_auth: []
+      responses:
+        '200':
+          description: Операция выполнена успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/User'
+        '400':
+          description: Параметр "uid" недопустим для запроса
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: bad request
+        '401':
+          description: Операция запрещена для неавторизованного пользователя или пользовательницы без разрешения "обновить:все: пользователь" или "обновить: самостоятельно: пользователь"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unauthorized
+        '422':
+          description: Отправлен неверный пользовательский объект, который ведет к ошибке unprocessable entity
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unprocessable entity
+        '500':
+          description: Не удалось сохранить пользователя с запрошенным uid
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: internal server error
+    delete:
+      tags:
+        - user/{uid}
+      summary: Удалите пользователя с идентификатором.
+      description: Этот маршрут используется для удаления пользователя, если разрешен действительный запрос текущего пользователя.
+      operationId: DeleteUser
+      parameters:
+        - name: uid
+          in: path
+          description: Идентификатор пользователя в базе данных
+          required: true
+          style: simple
+          schema:
+            type: number
+      security:
+        - sd_rest_auth: []
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Home'
+              example:
+                text: User has been successfully deleted
+              
+        '400':
+          description: Параметр "uid" недопустим для запроса
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: bad request
+        '401':
+          description: Операция запрещена для неавторизованного пользователя или пользователя без разрешения "удалить:все:пользователя" или "удалить:собственный:пользователь"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unauthorized
+        '500':
+          description: Не удалось удалить пользователя из базы данных
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: internal server error
+  /api/v1/user/auth:
+    options:
+      tags:
+        - user/auth
+      summary: Получите все допустимые методы для HTTP-запросов (для всех сущностей).
+      description: Этот маршрут используется для доступа ко всем разрешенным HTTP-методам.
+      operationId: OptionsUser
+      responses:
+        '200':
+          description: Успешной работы
+          content:
+            application/json:
+              schema:
+                type: string
+                items:
+                  $ref: '#/components/schemas/User'
+                example:
+                  text:
+                    Permitted options has been gotten
+    post:
+      tags:
+        - user/auth
+      summary: Аутентификация пользователя с помощью электронной почты или пары электронной почты и пароля
+      description: Этот маршрут используется для создания пользователей по одному, если разрешен действительный запрос текущего пользователя.
+      operationId: CreateOneTimePassword / CheckPassword
+      security:
+        - sd_rest_auth: []
+      responses:
+        '200':
+          description: Операция выполнена успешно
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    $ref: "#/components/schemas/Home"
+                  - type: object
+                    $ref: "#/components/schemas/User"
+              example:
+                text: One time password was sent by email
+        '401':
+          description: — / Неверна пара пароль и адрес электронной почты или не удалось создать токен для сеанса пользователя
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unauthorized
+        '422':
+          description: — / Отправлен неверный пользовательский объект, который ведет к ошибке unprocessable entity
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unprocessable entity
+        '500':
+          description: Не удалось создать новый пароль или отправить его по электронной почте / Не удалось найти пользователя с адресом электронной почты и паролем
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: internal server error
+  /api/v1/user/auth/onetime:
+    options:
+      tags:
+        - user/auth/onetime
+      summary: Получите все приемлемые методы для HTTP-запросов (для всех сущностей).
+      description: Этот маршрут используется для получения всех разрешенных HTTP-методов.
+      operationId: OptionsUser
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                type: string
+                items:
+                  $ref: '#/components/schemas/User'
+                example:
+                  text:
+                    Permitted options has been gotten
+    post:
+      tags:
+        - user/auth/onetime
+      summary: Выполните аутентификацию пользователя с помощью электронной почты или пары адресов электронной почты и пароля
+      description: Этот маршрут используется для создания пользователей по одному, если разрешен действительный запрос текущего пользователя.
+      operationId: CheckPasswordAndGenerateNewOne
+      security:
+        - sd_rest_auth: []
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/User"
+        '401':
+          description: Пароль и адрес электронной почты неверны или не удалось создать токен для сеанса пользователя
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unauthorized
+        '422':
+          description: Был отправлен неверный пользовательский объект, что является ошибкой перехода к объекту, не подлежащему обработке
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unprocessable entity
+        '500':
+          description: Не удалось найти пользователя с адресом электронной почты и паролем, или не удалось прочитать переменную "MAINTAIN_PASSWORD_LENGTH" из файла ".env", или не удалось найти пользователя с идентификатором
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: internal server error
+  /api/v1/user/page/{page}:
+    options:
+      tags:
+        - user/page/{page}
+      summary: Получите все приемлемые методы для HTTP-запросов (для всех объектов).
+      description: Этот маршрут используется для получения всех разрешенных HTTP-методов.
+      operationId: OptionsUser
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                type: string
+                items:
+                  $ref: '#/components/schemas/User'
+                example:
+                  text:
+                    Permitted options has been gotten
+    get:
+      tags:
+        - user/page/{page}
+      summary: Получите информацию о пользователях (вплоть до "USER_LIST_PAGE_LIMIT" на странице).
+      description: Этот маршрут используется для получения доступа к пользователям, если разрешен действительный запрос текущего пользователя.
+      operationId: GetUserList
+      parameters:
+        - name: page
+          in: path
+          description: Номер страницы списка пользователей
+          required: true
+          style: simple
+          schema:
+            type: number
+      security:
+        - sd_rest_auth: []
+      responses:
+        '200':
+          description: Успешная операция
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '400':
+          description: Параметр "страница" недопустим для запроса
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: bad request
+        '401':
+          description: Операция запрещена для неавторизованного пользователя или пользовательницы без разрешения "select:all:user"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: unauthorized
+        '500':
+          description: Переменная "USER_LIST_PAGE_LIMIT" не может быть получена из файла .env или данные пользователей не могут быть получены из базы данных
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Error'
+              example:
+                error: internal server error
 components:
   schemas:
     Response:
       type: object
       properties:
         response:
+          type: string
+    User:
+      type: object
+      properties:
+        id:
+          type: number
+        email:
+          type: string
+        password:
+          type: string
+        data:
+          type: object
+          properties:
+            state:
+              type: string
+              default: non-determined
+            nickname:
+              type: string
+              default: default
+        created_at:
+          type: string
+        updated_at:
+          type: string
+    Form:
+      type: object
+      properties:
+        id:
+          type: number
+        type:
+          type: string
+        password:
+          type: string
+        data:
+          oneOf:
+            - $ref: "#/components/schemas/CallbackForm"
+            - $ref: "#/components/schemas/CareerForm"
+            - $ref: "#/components/schemas/NewsletterForm"
+            - $ref: "#/components/schemas/QuestionnaireForm"
+            - $ref: "#/components/schemas/TestimonialForm"
+            - $ref: "#/components/schemas/WritetousForm"
+        author:
+          type: object
+          $ref: "#/components/schemas/User"
+        created_at:
+          type: string
+        updated_at:
+          type: string
+    CallbackForm:
+      type: object
+      properties:
+        callback-title:
+          type: string
+        callback-phone:
+          type: string
+        callback-name:
+          type: string
+        callback-time:
+          type: string
+    CareerForm:
+      type: object
+      properties:
+        career-first-name:
+          type: string
+        career-last-name:
+          type: string
+        career-email:
+          type: string
+        career-phone:
+          type: string
+        career-file:
+          type: string
+        career-address-1:
+          type: string
+        career-address-2:
+          type: string
+        career-city:
+          type: string
+        career-state:
+          type: string
+        career-zip-code:
+          type: string
+    NewsletterForm:
+      type: object
+      properties:
+        newsletter-title:
+          type: string
+        newsletter-name:
+          type: string
+        newsletter-email:
+          type: string
+    QuestionnaireForm:
+      type: object
+      properties:
+        questionnaire-first-name:
+          type: string
+        questionnaire-last-name:
+          type: string
+        questionnaire-email:
+          type: string
+        questionnaire-phone:
+          type: string
+        questionnaire-address:
+          type: string
+        questionnaire-city:
+          type: string
+        questionnaire-state:
+          type: string
+        questionnaire-zip-code:
+          type: string
+        questionnaire-answers:
+          type: array
+          items:
+            type: string
+    TestimonialForm:
+      type: object
+      properties:
+        testimonial-subject:
+          type: string
+        testimonial-review:
+          type: string
+        testimonial-name:
+          type: string
+        testimonial-email:
+          type: string
+        testimonial-service:
+          type: string
+        testimonial-file:
+          type: string
+    WritetousForm:
+      type: object
+      properties:
+        writetous-subject:
+          type: string
+        writetous-text:
+          type: string
+        writetous-title:
+          type: string
+        writetous-first-name:
+          type: string
+        writetous-last-name:
+          type: string
+        writetous-email:
           type: string

@@ -1,0 +1,62 @@
+name: Тестирование продуктов
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  api:
+    name: Тестирование API
+    runs-on: ubuntu-latest
+    steps:
+      - name: Загрузка репозитория
+        uses: actions/checkout@v6
+      - name: Настройка NodeJS
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - name: Кэширование модулей
+        uses: actions/cache@v4
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - name: Установка зависимостей
+        run: |
+          cd api
+          npm ci
+      - name: Тестирование
+        run: npm run test
+  indey-dev:
+    name: Тестирование indey.dev
+    runs-on: ubuntu-latest
+    steps:
+      - name: Загрузка репозитория
+        uses: actions/checkout@v6
+      - name: Настройка NodeJS
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - name: Кэширование модулей
+        uses: actions/cache@v4
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - name: Установка зависимостей
+        run: |
+          cd web/indey.dev
+          npm ci
+      - name: Тестирование
+        run: npm run test:unit

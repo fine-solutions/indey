@@ -6,6 +6,48 @@ on:
       - main
 
 jobs:
+  api:
+    name: Публикация API
+    runs-on: ubuntu-latest
+    steps:
+      - name: Загрузка репозитория
+        uses: actions/checkout@v6
+      - name: Настройка NodeJS
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - name: Кэширование модулей
+        uses: actions/cache@v4
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - name: Настройка доступа
+        run: |
+          set -eu
+          mkdir "$HOME/.ssh"
+          chmod 700 "$HOME/.ssh"
+          echo "${{ secrets.INDEY_DEPLOY }}" > "$HOME/.ssh/id_ed25519"
+          chmod 600 "$HOME/.ssh/id_ed25519"
+          echo "${{ secrets.INDEY_CONFIG }}" > "$HOME/.ssh/config"
+          chmod 600 "$HOME/.ssh/config"
+          ssh -o StrictHostKeyChecking=no deploy@indey.dev
+      - name: Установка переменных окружения
+        run: |
+          cd api
+          echo "${{ secrets.INDEY_ENV }}" > .env
+      - name: Публикация API
+        run: |
+          cd api
+          export DOCKER_HOST="ssh://deploy@indey.dev"
+          docker compose down
+          docker compose build
+          docker compose up --detach
   indey-dev:
     name: Публикация indey.dev
     runs-on: ubuntu-latest

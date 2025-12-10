@@ -32,7 +32,9 @@ jobs:
           cd api
           npm ci
       - name: Тестирование
-        run: npm run test
+        run: |
+          cd api
+          npm run test
   indey-dev:
     name: Тестирование indey.dev
     runs-on: ubuntu-latest
@@ -59,4 +61,6 @@ jobs:
           cd web/indey.dev
           npm ci
       - name: Тестирование
-        run: npm run test:unit
+        run: |
+          cd web/indey.dev
+          npm run test:unit

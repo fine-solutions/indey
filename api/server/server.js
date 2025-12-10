@@ -1,8 +1,9 @@
 const express = require('express')
 const { initDatabase } = require('./database.js')
 const { initRouter } = require('./router.js')
+const { createTables } = require('./seeder.js')
 
-async function initServer(appPort, appPath, dbUser, dbPassword, dbName, dbHost, dbPort) {
+async function initServer(appPort, appPath, dbUser, dbPassword, dbName, dbHost, dbPort, defaultUserList) {
   const app = express()
 
   const db = await initDatabase(
@@ -15,6 +16,8 @@ async function initServer(appPort, appPath, dbUser, dbPassword, dbName, dbHost, 
 
   if (db) {
     console.log(`Database is connected on '${dbHost}:${dbPort}...'`)
+    await createTables(database=db, userList=defaultUserList)
+
     initRouter(app, appPath, db)
 
     app.listen(appPort, () => {

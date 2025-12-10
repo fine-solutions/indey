@@ -1,17 +1,4 @@
-const randomstring = require('randomstring')
 const userModel = require('./user.js')
-
-const userList = []
-for (let i = 0; i < 256; i++) {
-  userList.push({
-    id: i + 1,
-    email: `${randomstring.generate(6)}@${randomstring.generate(6)}.${randomstring.generate(3)}`
-  })
-}
-
-const db = {
-  users: userList
-}
 
 /**
   get()

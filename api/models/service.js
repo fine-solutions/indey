@@ -128,8 +128,9 @@ async function update(database, filter, email) {
  * @return {boolean}          True if removing is successful
  */
 async function remove(database, filter) {
-  const query = prepareWhereExpression(filter)
-  query['text'] = `DELETE users ${query['text']}`
+  const query = prepareWhereExpression(filter, 2)
+  query['text'] = `UPDATE users SET email = $1 ${query['text']}`
+  query['values'] = [ email ].concat(query['values'])
   try {
     await database.query(query)
     return true

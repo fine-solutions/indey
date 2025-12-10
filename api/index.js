@@ -1,3 +1,5 @@
+const fs = require('fs')
+
 require('dotenv').config()
 const { initServer } = require('./server/server.js')
 
@@ -20,4 +22,16 @@ if (appMode === 'PRODUCTION') {
   dbPort = process.env.DB_DEBUG_PORT
 }
 
-initServer(port, basePath, dbUser, dbPassword, dbName, dbHost, dbPort)
+const userListFile = fs.readFileSync(`${process.env.USER_LIST}`)
+const defaultUserList = JSON.parse(userListFile)
+
+initServer(
+  port,
+  basePath,
+  dbUser,
+  dbPassword,
+  dbName,
+  dbHost,
+  dbPort,
+  defaultUserList
+)

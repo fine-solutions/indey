@@ -1,0 +1,51 @@
+name: Публикация продуктов
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  indey-dev:
+    name: Публикация indey.dev
+    runs-on: ubuntu-latest
+    steps:
+      - name: Загрузка репозитория
+        uses: actions/checkout@v6
+      - name: Настройка NodeJS
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - name: Кэширование модулей
+        uses: actions/cache@v4
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - name: Настройка доступа
+        run: |
+          set -eu
+          mkdir "$HOME/.ssh"
+          chmod 700 "$HOME/.ssh"
+          echo "${{ secrets.INDEY_DEPLOY }}" > "$HOME/.ssh/id_ed25519"
+          chmod 600 "$HOME/.ssh/id_ed25519"
+          echo "${{ secrets.INDEY_CONFIG }}" > "$HOME/.ssh/config"
+          chmod 600 "$HOME/.ssh/config"
+          ssh -o StrictHostChecking=no deploy@indey.dev
+      - name: Установка зависимостей
+        run: |
+          cd web/indey.dev
+          npm ci
+      - name: Сборка продукта
+        run: |
+          cd web/indey.dev
+          npm run build
+      - name: Публикация сайта
+        run: |
+          cd web/indey.dev/dist
+          rsync --archive --progress --compress --delete . indey.dev:/web/sites/indey.dev/www

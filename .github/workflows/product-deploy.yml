@@ -36,7 +36,7 @@ jobs:
           chmod 600 "$HOME/.ssh/id_ed25519"
           echo "${{ secrets.INDEY_CONFIG }}" > "$HOME/.ssh/config"
           chmod 600 "$HOME/.ssh/config"
-          ssh -o StrictHostChecking=no deploy@indey.dev
+          ssh -o StrictHostKeyChecking=no deploy@indey.dev
       - name: Установка зависимостей
         run: |
           cd web/indey.dev

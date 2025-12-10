@@ -1,35 +1,32 @@
-@import './base.css';
+:root {
+  /* Colors */
+  --primary-color: 257 24% 47%;
+  --valid-color: 120, 100%, 50%;
+  --error-color: 0, 100%, 50%;
+  --background-color: 0, 0%, 100%;
+  --text-color: 0, 0%, 0%;
+  --text-inversion-color: 240 11% 96%;
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  /* Sizes */
+  --page-gap: 40px;
+  --page-padding: 23px;
+  --form-field-gap: 20px;
+  --form-field-horizontal-padding: 23px;
+  --form-field-vertical-padding: 14px;
+  --form-field-border-radius: 12px;
+
+  /* Typography */
+  --font-family: Fira Sans, sans-serif;
+  --font-regular-weight: 400;
+  --font-medium-weight: 500;
+  --paragraph-font-size: 16px;
+  --form-field-font-size: 16px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
   font-weight: normal;
-}
-
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
-}
-
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
-
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
 }

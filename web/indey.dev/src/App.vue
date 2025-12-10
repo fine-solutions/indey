@@ -1,85 +1,125 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import { ref } from 'vue'
+import { useRouter, RouterView } from 'vue-router'
+
+const router = useRouter()
+
+const currentYear = ref(0)
+currentYear.value = new Date().getFullYear()
+
+function toggleMenu() {
+  const menu = document.querySelector('.app__navigation')
+  menu.classList.toggle('navigation--open')
+}
+
+function goToProfile() {
+  router.push({ name: 'profile' })
+}
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
+  <header class="app__header">
+    <button class="app__menu" @click="toggleMenu">Меню</button>
+    <button class="app__profile" @click="goToProfile">Профиль</button>
   </header>
-
-  <RouterView />
+  <RouterView class="app__main" />
+  <footer class="app__footer">
+    Все права защищены © {{ currentYear }}
+  </footer>
+  <nav class="app__navigation navigation">
+    <ul class="navigation__list">
+      <li class="navigation__item">
+        <router-link @click="toggleMenu" :to="{ name: 'home' }">Главная страница</router-link>
+      </li>
+      <li class="navigation__item">
+        <router-link @click="toggleMenu" :to="{ name: 'prices' }">Тарифные планы</router-link>
+      </li>
+      <li class="navigation__item">
+        <router-link @click="toggleMenu" :to="{ name: 'profile' }">Профиль пользователя</router-link>
+      </li>
+      <li class="navigation__item">
+        <router-link @click="toggleMenu" :to="{ name: 'repo' }">Репозиторий проекта</router-link>
+      </li>
+    </ul>
+    <button class="navigation__close" @click="toggleMenu">Закрыть</button>
+  </nav>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+<style>
+.app {
+  font-size: var(--paragraph-font-size);
+  font-family: var(--font-family);
+  color: hsl(var(--text-color));
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+.app__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--page-padding);
 }
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
+.app__menu,
+.app__profile {
+  appearance: none;
   background-color: transparent;
+  border: none;
+  font-weight: var(--font-medium-weight);
+  padding: var(--form-field-vertical-padding) 0px;
+  cursor: pointer;
+  color: hsl(var(--primary-color));
+  font-weight: var(--font-medium-weight);
 }
 
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+.app__footer {
+  padding: var(--page-padding);
 }
 
-nav a:first-of-type {
-  border: 0;
+.app__navigation {
+  position: fixed;
+  display: none;
+  width: 100vw;
+  height: 100vh;
+  left: 0px;
+  top: 0px;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+.navigation {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--page-gap);
+  background-color: hsl(var(--background-color));
+}
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
+.navigation--open {
+  display: flex;
+}
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.navigation__list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--form-field-gap);
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
+}
 
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
+.navigation__item a {
+  cursor: pointer;
+  text-decoration: none;
+  color: hsl(var(--text-color));
+}
 
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+.navigation__close {
+  cursor: pointer;
+  appearance: none;
+  background-color: transparent;
+  border: none;
+  color: hsl(var(--primary-color));
+  font-weight: var(--font-medium-weight);
 }
 </style>

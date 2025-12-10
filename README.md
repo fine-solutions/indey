@@ -1,6 +1,6 @@
 # Проект Indey
 
-[![Тестирование продуктов](https://github.com/fine-solutions/indey/actions/workflows/product-test.yml/badge.svg)](https://github.com/fine-solutions/indey/actions/workflows/product-test.yml)
+[![Публикация продуктов](https://github.com/fine-solutions/indey/actions/workflows/product-deploy.yml/badge.svg)](https://github.com/fine-solutions/indey/actions/workflows/product-deploy.yml) [![Тестирование продуктов](https://github.com/fine-solutions/indey/actions/workflows/product-test.yml/badge.svg)](https://github.com/fine-solutions/indey/actions/workflows/product-test.yml)
 
 Проект Indey — набор базовых инструментов для инди-предпринимателей, с ограниченным бюджетом для разработки и внедрения цифровых продуктов. Презентация продукта(-ов), обработка заказов и поддержка клиентов — основная цель Indey.
 

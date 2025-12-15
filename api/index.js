@@ -6,6 +6,7 @@ const { initServer } = require('./server/server.js')
 const port = process.env.PORT || 5000
 const basePath = `${process.env.BASE_PATH}/v${process.env.API_VERSION}`
 const appMode = process.env.MODE
+const saltRounds = Number(process.env.SALT_ROUNDS) || 10
 
 let dbUser, dbPassword, dbName, dbHost, dbPort
 if (appMode === 'PRODUCTION') {
@@ -33,5 +34,6 @@ initServer(
   dbName,
   dbHost,
   dbPort,
-  defaultUserList
+  defaultUserList,
+  saltRounds
 )

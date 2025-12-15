@@ -1,9 +1,10 @@
 class BaseModel {
   static isFilterValid(filter) {
+    let filterKeys = []
     if (typeof filter !== 'object') {
       return false
     } else {
-      const filterKeys = Object.keys(filter)
+      filterKeys = Object.keys(filter)
       if (filterKeys.length === 0) {
         return true
       }
@@ -15,9 +16,6 @@ class BaseModel {
         result = result && true
       } else {
         for (let j = 0; j < operations.length; j++) {
-          if (!this.isValueTypeValid(filterKeys[i], filter[filterKeys[i]][operations[j]])) {
-            throw new Error(`Value '${filter[filterKeys[i]][operations[j]]}' for field '${filterKeys[i]}' in filter object is not valid for field type`)
-          }
           switch (operations[j]) {
             case '<':
             case '<=':
@@ -26,10 +24,12 @@ class BaseModel {
               if (!['number'].includes(typeof filter[filterKeys[i]][operations[j]])) {
                 throw new Error(`Type of operation '${operations[j]}' value '${filter[filterKeys[i]][operations[j]]}' in filter object is not valid`)
               }
+              return true
             case '=':
               if (!['number', 'string'].includes(typeof filter[filterKeys[i]][operations[j]])) {
                 throw new Error(`Type of operation '${operations[j]}' value '${filter[filterKeys[i]][operations[j]]}' in filter object is not valid`)
               }
+              return true
             default:
               throw new Error(`Operation '${operations[j]}' for field in filter object is not compatible`)
           }
@@ -56,8 +56,8 @@ class BaseModel {
  * @return  {object}              an object for where expression
  */
 function prepareWhereExpression(filter, startIndex = 1) {
-  User.isFilterValid(filter=filter)
-  let text = 'WHERE'
+  BaseModel.isFilterValid(filter=filter)
+  let text = ''
   let counter = startIndex
   const values = []
   const filterKeys = Object.keys(filter)
@@ -70,11 +70,10 @@ function prepareWhereExpression(filter, startIndex = 1) {
       values.push(filter[field][operation])
       counter++
     }
-    values.push(filter[field])
   }
 
   return {
-    text,
+    text: text === '' ? '' : `WHERE ${text}`,
     values,
   }
 }

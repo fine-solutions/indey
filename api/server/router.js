@@ -1,7 +1,7 @@
 const { Router } = require('express')
 
 const { getHome } = require('../controllers/home.js')
-const { getUsers } = require('../controllers/user.js')
+const { getUsers, authUser } = require('../controllers/user.js')
 
 function initRouter(app, basePath, db) {
   const router = Router()
@@ -11,6 +11,7 @@ function initRouter(app, basePath, db) {
 
   // User
   router.get(`/user`, getUsers(database=db))
+  router.post(`/user/auth`, authUser(database=db))
 
   // Initialization
   app.use(basePath, router)

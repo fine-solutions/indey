@@ -6,8 +6,8 @@ const { seedUser } = require('../seeders/user.js')
  * @param {object} database   Database with users' data
  * @param {array}  userList   Users' data
  */
-async function createTables(database, userList) {
-  await seedUser(database=database, userList=userList)
+async function createTables(database, userList, saltRounds) {
+  await seedUser(database=database, userList=userList, saltRounds=saltRounds)
 }
 
 module.exports = {

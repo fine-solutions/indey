@@ -1,5 +1,11 @@
 [
   {
-    "email": "igsekor@gmail.com"
+    "email": "igsekor@gmail.com",
+    "password": "qwerty123456",
+    "data": {
+      "firstName": "Игорь",
+      "secondName": "Сергеевич",
+      "lastName": "Коровченко"
+    }
   }
 ]
